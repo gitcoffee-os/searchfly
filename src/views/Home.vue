@@ -15,7 +15,8 @@
  */
 <template>
   <SearchHome
-    :app-name="'SearchFly'"
+    :app-name="APP_INFO.name"
+    :official-website="APP_INFO.officialWebsite"
     :logo-url="iconUrl"
     :setting-data="settingData"
     :show-search-box="true"
@@ -44,6 +45,8 @@ import { ref, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import iconUrl from '../../assets/logo.svg';
 import { getLanguageName, supportedLanguages, setLanguage } from '@gitcoffee/i18n';
+// 导入应用配置
+import { APP_INFO } from '../config/config';
 // 导入本地国际化函数
 import { useI18n } from '@gitcoffee/i18n';
 import { useCurrentLanguage } from '../locales';

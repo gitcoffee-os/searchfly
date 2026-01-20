@@ -21,28 +21,42 @@
     :searching="searching"
     :searchQuery="searchQuery"
     :selectedPlatforms="selectedPlatforms"
+    :selectedSearchEngine="selectedSearchEngine"
     @search="handleSearch"
     @update:searchQuery="updateSearchQuery"
+    @update:selectedSearchEngine="updateSelectedSearchEngine"
   />
 </template>
 
 <script setup lang="ts">
 import { SearchBox } from '@gitcoffee/search-ui';
 
-import { selectedPlatforms } from '@gitcoffee/search';
+import { selectedPlatforms, selectedSearchEngine } from '@gitcoffee/search';
 import { executeSearch, searching, searchQuery } from '@gitcoffee/search';
-import { settingData } from '@gitcoffee/search';
+import { settingData } from '@gitcoffee/app';
 
 // 处理搜索事件
-const handleSearch = (query: string, engine: string) => {
-  // 执行搜索逻辑，传递选中的搜索引擎
-  executeSearch(query, selectedPlatforms.value, undefined, engine);
+const handleSearch = (query: string, engine: string, apiEnabled?: boolean) => {
+  // 根据智能搜索状态决定传递的参数
+  if (settingData.value.smartSearchEnabled !== false) {
+    // 智能搜索模式：只传递平台参数，不传递搜索引擎参数
+    executeSearch(query, selectedPlatforms.value);
+  } else {
+    // 非智能搜索模式：传递搜索引擎参数，平台参数传空数组
+    executeSearch(query, [], engine);
+  }
 };
 
 // 更新搜索查询
 const updateSearchQuery = (value: string) => {
   // 直接修改searchQuery，它是一个ref
   searchQuery.value = value;
+};
+
+// 更新选中的搜索引擎
+const updateSelectedSearchEngine = (value: string) => {
+  // 直接修改selectedSearchEngine，它是一个ref
+  selectedSearchEngine.value = value;
 };
 </script>
 
