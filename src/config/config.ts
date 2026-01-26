@@ -42,12 +42,12 @@ export const APP_INFO = {
   openSourceCommunity: 'https://github.com/gitcoffee-os',
   githubRepository: 'https://github.com/gitcoffee-os/searchfly',
   rateApp: 'https://github.com/gitcoffee-os/searchfly',
-  submitFeedback: 'https://github.com/gitcoffee-os/searchfly/issues'
+  submitFeedback: 'https://github.com/gitcoffee-os/searchfly/issues',
 };
 
 // 应用默认设置
 export const APP_SETTING = {
   smartSearch: false, // searchfly默认不启用智能搜索
   aiModeSearch: false, // searchfly默认不启用AI模式搜索
-  aiTabUrl: 'https://dreamingai.exmay.com/' // AI选项卡默认URL
+  aiTabUrl: 'https://dreamingai.exmay.com/', // AI选项卡默认URL
 };

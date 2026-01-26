@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { App } from 'vue';
 import {
   Avatar,
   Button,
@@ -41,6 +40,7 @@ import {
   Tabs,
   Tag,
 } from 'ant-design-vue';
+import { App } from 'vue';
 
 /**
  * 注册所有Ant Design Vue组件

@@ -13,34 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ref, App } from 'vue';
-// 导入核心i18n包的功能
-import { 
-  localeManager, 
-  useTranslate, 
-  registerProjectMessages, 
-  registerLanguageChangeCallback,
-  t as coreT,
-  useCurrentLanguage as useCoreCurrentLanguage
-} from '@gitcoffee/i18n';
 
+// 导入核心i18n包的功能
+import {
+  t as coreT,
+  localeManager,
+  registerLanguageChangeCallback,
+  registerProjectMessages,
+  useCurrentLanguage as useCoreCurrentLanguage,
+  useTranslate,
+} from '@gitcoffee/i18n';
+import { App, ref } from 'vue';
 // 导入searchfly项目特定的语言资源
 import enCommon from './en/common.json';
 import enHome from './en/home.json';
-import enSearchResults from './en/searchResults.json';
 import enSearch from './en/search.json';
+import enSearchResults from './en/searchResults.json';
 import enSetting from './en/setting.json';
-
 import zhTwCommon from './zh-TW/common.json';
 import zhTwHome from './zh-TW/home.json';
-import zhTwSearchResults from './zh-TW/searchResults.json';
 import zhTwSearch from './zh-TW/search.json';
+import zhTwSearchResults from './zh-TW/searchResults.json';
 import zhTwSetting from './zh-TW/setting.json';
-
 import zhCommon from './zh/common.json';
 import zhHome from './zh/home.json';
-import zhSearchResults from './zh/searchResults.json';
 import zhSearch from './zh/search.json';
+import zhSearchResults from './zh/searchResults.json';
 import zhSetting from './zh/setting.json';
 
 // 注册searchfly项目特定的语言消息到核心i18n
@@ -50,7 +48,7 @@ registerProjectMessages('searchfly', 'en', {
   home: enHome,
   searchResults: enSearchResults,
   search: enSearch,
-  setting: enSetting
+  setting: enSetting,
 });
 
 // 中文简体消息
@@ -59,7 +57,7 @@ registerProjectMessages('searchfly', 'zh', {
   home: zhHome,
   searchResults: zhSearchResults,
   search: zhSearch,
-  setting: zhSetting
+  setting: zhSetting,
 });
 
 // 中文繁体消息
@@ -68,7 +66,7 @@ registerProjectMessages('searchfly', 'zh-TW', {
   home: zhTwHome,
   searchResults: zhTwSearchResults,
   search: zhTwSearch,
-  setting: zhTwSetting
+  setting: zhTwSetting,
 });
 
 /**
@@ -94,10 +92,10 @@ export const i18nPlugin = {
   install(app: App) {
     // 全局注入$t函数
     app.config.globalProperties.$t = coreT;
-    
+
     // 提供全局注入，支持Composition API
     app.provide('$t', coreT);
-  }
+  },
 };
 
 /**
@@ -107,22 +105,22 @@ export const i18nPlugin = {
 export const useTranslation = () => {
   // 使用本地的currentLanguage引用，确保响应式
   const currentLanguageRef = currentLanguage;
-  
+
   // 返回一个响应式翻译函数
   const translate = (key: string, params?: Record<string, any>): string => {
     // 访问currentLanguageRef.value建立响应式依赖
     const i18n = localeManager.getI18n();
     const lang = currentLanguageRef.value;
-    
+
     // 如果没有i18n实例，返回key
     if (!i18n) {
       return key;
     }
-    
+
     // 使用i18n实例进行翻译
     return i18n.global.t(key, params);
   };
-  
+
   return translate;
 };
 

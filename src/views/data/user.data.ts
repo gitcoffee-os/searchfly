@@ -15,9 +15,9 @@
  */
 import { message, Modal } from '@gitcoffee/design-ui';
 import { onActivated, onMounted, onUnmounted } from 'vue';
-import { useSettingsStore } from '../../stores';
 // 导入本地国际化函数
 import { $t } from '../../locales';
+import { useSettingsStore } from '../../stores';
 
 // 导出用户信息（从 store 获取）
 export const userInfo = () => useSettingsStore().userInfo;

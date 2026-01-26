@@ -1,21 +1,19 @@
-/**
- * Copyright (c) 2025-2099 GitCoffee All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/** * Copyright (c) 2025-2099 GitCoffee All Rights Reserved. * * Licensed under
+the Apache License, Version 2.0 (the "License"); * you may not use this file
+except in compliance with the License. * You may obtain a copy of the License at
+* * http://www.apache.org/licenses/LICENSE-2.0 * * Unless required by applicable
+law or agreed to in writing, software * distributed under the License is
+distributed on an "AS IS" BASIS, * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+either express or implied. * See the License for the specific language governing
+permissions and * limitations under the License. */
 
 <template>
-  <SearchResults :searchApiConfig="searchApiConfig" :iconUrl="iconUrl" v-model:showSettingModal="showSettingModal" :aiTabUrl="APP_SETTING.aiTabUrl">
+  <SearchResults
+    :searchApiConfig="searchApiConfig"
+    :iconUrl="iconUrl"
+    v-model:showSettingModal="showSettingModal"
+    :aiTabUrl="APP_SETTING.aiTabUrl"
+  >
     <template #user-setting>
       <UserSetting v-model="showSettingModal" />
     </template>
@@ -23,16 +21,16 @@
 </template>
 
 <script setup lang="ts">
-import { SearchResults } from '@gitcoffee/search-ui';
 import { message } from '@gitcoffee/design-ui';
+import { $t, localeManager, useCurrentLanguage } from '@gitcoffee/i18n';
+import { settingData } from '@gitcoffee/search';
+import { SearchResults } from '@gitcoffee/search-ui';
 import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import iconUrl from '../../../assets/logo.svg';
-import { SEARCH_API_CONFIG, APP_SETTING } from '../../config/config';
-import { useCurrentLanguage, localeManager, $t } from '@gitcoffee/i18n';
-import UserSetting from '../components/UserSetting.vue';
-import { settingData } from '@gitcoffee/search';
+import { APP_SETTING, SEARCH_API_CONFIG } from '../../config/config';
 import { useSettingsStore } from '../../stores';
+import UserSetting from '../components/UserSetting.vue';
 
 // 获取当前语言的响应式引用，确保语言切换时组件自动更新
 const currentLanguageRef = useCurrentLanguage();

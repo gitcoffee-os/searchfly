@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router';
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+} from 'vue-router';
 import Home from '../views/Home.vue';
 // 搜索个性化扩展点
 import SearchResults from '../views/modules/SearchResults.vue';

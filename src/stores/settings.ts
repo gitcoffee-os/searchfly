@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { defineStore } from '@gitcoffee/store';
-import { getItem, setItem, removeItem } from '@gitcoffee/storage';
 import { search } from '@gitcoffee/api';
+import { getItem, removeItem, setItem } from '@gitcoffee/storage';
+import { defineStore } from '@gitcoffee/store';
 import { APP_SETTING } from '../config/config';
 
 export interface UserInfo {
@@ -41,7 +41,7 @@ export const useSettingsStore = defineStore('settings', {
     // 应用设置
     appSettings: {
       language: 'zh',
-      theme: 'red',
+      theme: 'light',
       trustedDomains: [],
       smartSearch: APP_SETTING.smartSearch,
     } as AppSettings,
@@ -49,7 +49,7 @@ export const useSettingsStore = defineStore('settings', {
     isLoading: false,
     isLoggedIn: false,
   }),
-  
+
   getters: {
     // 计算用户是否登录 - 临时注释登录校验，总是返回已登录状态
     getIsLoggedIn: (state) => true, // !!state.userInfo.nickname,
@@ -60,7 +60,7 @@ export const useSettingsStore = defineStore('settings', {
     // 获取受信任域名
     getTrustedDomains: (state) => state.appSettings.trustedDomains,
   },
-  
+
   actions: {
     // 初始化设置
     async initialize() {
@@ -76,43 +76,47 @@ export const useSettingsStore = defineStore('settings', {
         this.isLoading = false;
       }
     },
-    
+
     // 加载用户信息
     async loadUserInfo() {
       try {
         // 从API获取用户信息
         const res = await search.user.userInfoApi({});
-        if (!res) throw new Error('API response is undefined');
-        const data = res.data;
-        this.userInfo = data;
-        this.isLoggedIn = !!data.nickname;
-        // 保存到本地存储
-        await setItem('user', JSON.stringify(data));
-        return data;
+        if (res && res.data) {
+          const data = res.data;
+          this.userInfo = data;
+          this.isLoggedIn = !!data.nickname;
+          // 保存到本地存储
+          await setItem('user', JSON.stringify(data));
+          return data;
+        }
       } catch (error) {
         console.error('Failed to load user info:', error);
-        // 尝试从本地存储加载
-        const savedUser = await getItem('user');
-        if (savedUser) {
-          this.userInfo = JSON.parse(savedUser);
-          this.isLoggedIn = !!this.userInfo.nickname;
-        }
-        return null;
       }
+      // 尝试从本地存储加载（API调用失败或返回undefined时）
+      const savedUser = await getItem('user');
+      if (savedUser) {
+        this.userInfo = JSON.parse(savedUser);
+        this.isLoggedIn = !!this.userInfo.nickname;
+      }
+      return null;
     },
-    
+
     // 保存用户信息
     async saveUserInfo(userData: UserInfo) {
       this.userInfo = userData;
       this.isLoggedIn = !!userData.nickname;
       await setItem('user', JSON.stringify(userData));
     },
-    
+
     // 登录
     login() {
-      window.open('https://searchfly.exmay.com/exmay/searchfly/center/home', '_blank');
+      window.open(
+        'https://searchfly.exmay.com/exmay/searchfly/center/home',
+        '_blank'
+      );
     },
-    
+
     // 登出
     async logout() {
       try {
@@ -131,38 +135,41 @@ export const useSettingsStore = defineStore('settings', {
         return false;
       }
     },
-    
+
     // 加载应用设置
     async loadAppSettings() {
       try {
         // 从本地存储加载应用设置，使用不同的存储键以避免与@gitcoffee/app包冲突
         const savedSettings = await getItem('searchflySettings');
         if (savedSettings) {
-          this.appSettings = { ...this.appSettings, ...JSON.parse(savedSettings) };
+          this.appSettings = {
+            ...this.appSettings,
+            ...JSON.parse(savedSettings),
+          };
         }
       } catch (error) {
         console.error('Failed to load app settings:', error);
       }
     },
-    
+
     // 保存应用设置
     async saveAppSettings(settings: Partial<AppSettings>) {
       this.appSettings = { ...this.appSettings, ...settings };
       // 使用不同的存储键以避免与@gitcoffee/app包冲突
       await setItem('searchflySettings', JSON.stringify(this.appSettings));
     },
-    
+
     // 保存受信任域名
     async saveTrustedDomains(domains: string[]) {
       this.appSettings.trustedDomains = domains;
       await this.saveAppSettings(this.appSettings);
     },
-    
+
     // 切换语言
     async changeLanguage(language: string) {
       await this.saveAppSettings({ language });
     },
-    
+
     // 切换主题
     async changeTheme(theme: string) {
       await this.saveAppSettings({ theme });

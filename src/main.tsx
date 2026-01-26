@@ -20,14 +20,13 @@ import '@gitcoffee/theme-ui/red.css';
 import App from './App.vue';
 // 先导入locales/index.ts，确保翻译资源被注册
 import './locales';
-import { useSettingsStore } from './stores';
-import router from './router';
-import { APP_ID, BASE_URL } from './config/config';
 // 导入通用应用初始化函数
 import { initApp } from '@gitcoffee/app';
-
 // 导入并注册Ant Design Vue组件
 import { registerAntdvComponents } from './components/antdv.register';
+import { APP_ID, BASE_URL } from './config/config';
+import router from './router';
+import { useSettingsStore } from './stores';
 
 // 使用通用应用初始化函数
 initApp({
@@ -38,6 +37,5 @@ initApp({
   },
   BASE_URL,
   APP_ID,
-  useSettingsStore
+  useSettingsStore,
 });
-
